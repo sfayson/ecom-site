@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
+
+import { UserContext } from "../../contexts/user.context";
 
 import {
   signInAuthUserWithEmailAndPassword,
@@ -20,6 +22,8 @@ const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
+  const { setCurrentUser } = useContext(UserContext);
+
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
@@ -37,7 +41,8 @@ const SignInForm = () => {
         email,
         password
       );
-      console.log(response);
+      setCurrentUser(user);
+
       resetFormFields();
     } catch (error) {
       console.log("user sign in failed", error);
@@ -72,10 +77,8 @@ const SignInForm = () => {
           value={password}
         />
         <div className="buttons-container">
-          <Button type="submit">Sign In</Button>
-          <Button buttonType="google" type="button" onClick={signInWithGoogle}>
-            Sign In With Google
-          </Button>
+          <Button type="submit" aria-label="Name" label={"Sign In"}/>
+          <Button buttonType="google" type="button" onClick={signInWithGoogle} label={"Sign in with Google"}/>
         </div>
       </form>
     </div>
